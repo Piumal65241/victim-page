@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Victim Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('td1.webp') no-repeat center center/cover;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: #99dd93;
+            padding: 25px;
+            width: 100%;
+            max-width: 520px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: groove;
+            border-color: green;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        .btn-submit {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-reset {
+            background: #f0ad4e;
+            color: black;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .error-text {
+            color: red;
+            font-size: 0.9rem;
+        }
+
+        .success-border {
+            border: 2px solid green !important;
+        }
+
+        .error-border {
+            border: 2px solid red !important;
+        }
+
+        form{
+            background-color:;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>Victim Details</h2>
+
+        <input type="search" id="search" placeholder="Search by name..." onkeyup="searchVictim()">
+
+        <form onsubmit="return validateForm()">
+
+            <label>First Name</label>
+            <input type="text" id="firstname" required>
+
+            <label>Last Name</label>
+            <input type="text" id="lastname" required>
+
+            <label>Affected Persons</label>
+            <input type="number" id="affected" min="0">
+
+            <label>Gender</label>
+            <select id="gender" required>
+                <option value="">-- Select Gender --</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+
+            <label>Contact Number</label>
+            <input type="tel" id="phone" maxlength="10" placeholder="10-digit number">
+            <div id="phoneError" class="error-text"></div>
+
+            <label>Incident Status</label>
+            <textarea id="status" rows="3"></textarea>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-submit">Submit</button>
+                <button type="reset" class="btn-reset" onclick="resetStyles()">Reset</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+function validateForm() {
+    let phone = document.getElementById("phone");
+    let phoneError = document.getElementById("phoneError");
+
+    phone.classList.remove("success-border", "error-border");
+    phoneError.textContent = "";
+
+    if (phone.value !== "" && !/^[0-9]{10}$/.test(phone.value)) {
+        phone.classList.add("error-border");
+        phoneError.textContent = "Contact number must be exactly 10 digits";
+        return false;
+    }
+
+    phone.classList.add("success-border");
+    alert("Form submitted successfully!");
+    return true;
+}
+
+function searchVictim() {
+    let input = document.getElementById("search").value.toLowerCase();
+    let fname = document.getElementById("firstname");
+    let lname = document.getElementById("lastname");
+
+    fname.classList.remove("success-border", "error-border");
+    lname.classList.remove("success-border", "error-border");
+
+    if (input === "") return;
+
+    fname.classList.add(
+        fname.value.toLowerCase().includes(input) ? "success-border" : "error-border"
+    );
+
+    lname.classList.add(
+        lname.value.toLowerCase().includes(input) ? "success-border" : "error-border"
+    );
+}
+
+function resetStyles() {
+    document.querySelectorAll(".success-border, .error-border").forEach(el => {
+        el.classList.remove("success-border", "error-border");
+    });
+    document.getElementById("phoneError").textContent = "";
+}
+</script>
+
+</body>
+</html>
